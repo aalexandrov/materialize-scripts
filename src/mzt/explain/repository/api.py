@@ -28,7 +28,7 @@ class Repository:
         if not self.root.exists():
             logging.info(f"initialize new repository in {self.root}")
             self.root.mkdir(parents=True)
-            for ext in ["jq", "css", "xml", "xsl"]:
+            for ext in ["js", "css", "xml", "xsl"]:
                 file = f"index.{ext}"
                 if ext == "xml":
                     shutil.copy(resource_path(file), self.root / file)

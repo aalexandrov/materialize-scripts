@@ -8,7 +8,7 @@
 # by the Apache License, Version 2.0.
 
 from enum import Enum
-from typing import TextIO
+from typing import TextIO, List
 
 import psycopg2
 import psycopg2.extensions
@@ -16,29 +16,45 @@ import mzt.dot.api
 
 
 class ExplainMode(Enum):
-    RAW = "raw"
-    DECORRELATED = "decorrelated"
-    OPTIMIZED = "optimized"
-    TYPED = "typed"
+    RAW_PLAN = "raw-plan"
+    DECORRELATED_PLAN = "decorrelated-plan"
+    OPTIMIZED_PLAN = "optimized-plan"
+
+    TYPED_RAW_PLAN = "typed-raw-plan"
+    TYPED_DECORRELATED_PLAN = "typed-decorrelated-plan"
+    TYPED_OPTIMIZED_PLAN = "typed-optimized-plan"
+
+    QUERY_GRAPH = "query-graph"
+    TYPED_QUERY_GRAPH = "typed-query-graph"
 
     def __str__(self) -> str:
         return self.value
 
+    def untyped_plans() -> List["ExplainMode"]:
+        return [
+            ExplainMode.RAW_PLAN,
+            ExplainMode.DECORRELATED_PLAN,
+            ExplainMode.OPTIMIZED_PLAN,
+        ]
+
 
 def query(out: TextIO, query: str, mode: ExplainMode, **kwargs) -> None:
-    """Dot graph for 'EXPLAIN {mode} PLAN FOR {query}'."""
+    """Dot graph for 'EXPLAIN {mode} FOR {query}'."""
 
     with connect(**kwargs) as conn, conn.cursor() as cursor:
-        cursor.execute(f"explain {mode} plan for {query}")
+        cursor.execute(f"EXPLAIN {str(mode).replace('-', ' ').upper()} FOR {query}")
         lines = cursor.fetchone()[0].splitlines()
-        mzt.dot.api.generate_graph(out, lines)
+        if mode not in [ExplainMode.QUERY_GRAPH, ExplainMode.TYPED_QUERY_GRAPH]:
+            mzt.dot.api.generate_graph(out, lines)
+        else:
+            out.write("\n".join(lines) + "\n")
 
 
 def view(out: TextIO, view: str, mode: ExplainMode, **kwargs) -> None:
-    """Dot graph for 'EXPLAIN {mode} PLAN FOR VIEW {view}'."""
+    """Dot graph for 'EXPLAIN {mode} FOR VIEW {view}'."""
 
     with connect(**kwargs) as conn, conn.cursor() as cursor:
-        query = f"explain {mode} plan for view {view}"
+        query = f"EXPLAIN {str(mode).replace('-', ' ').upper()} FOR VIEW {view}"
         cursor.execute(query)
         lines = cursor.fetchone()[0].splitlines()
         mzt.dot.api.generate_graph(out, lines, view)
