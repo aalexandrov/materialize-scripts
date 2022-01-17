@@ -75,3 +75,19 @@ python -m http.server --directory "$MZT_REPOSITORY" 7123 > /dev/null 2>&1 &
 ```
 
 The repository will be then available at http://localhost:7123/index.xml.
+
+## Useful Snippets
+
+To add pretty-printed queries, write the query in a `$TEMP_FILE` and then run:
+
+```bash
+mzt explain repository add "$(cat $TEMP_FILE)"
+```
+
+To update all images in an existing repository:
+
+```bash
+for f in $(find $MZT_REPOSITORY -name 'query.sql'); do 
+    mzt explain repository add "$(cat $f)";
+done 
+```

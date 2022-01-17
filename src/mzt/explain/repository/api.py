@@ -56,8 +56,9 @@ class Repository:
                 mzt.explain.api.query(dot_file, query, mode, **kwargs)
 
             # generate png files mode
-            svg_path = entry_path / f"{mode}.svg"
-            check_call(["dot", "-Tsvg", str(dot_path), "-o", str(svg_path)])
+            for format in ["svg", "png"]:
+                img_path = entry_path / f"{mode}.{format}"
+                check_call(["dot", "-T", format, str(dot_path), "-o", str(img_path)])
 
         # re-index
         self.index()

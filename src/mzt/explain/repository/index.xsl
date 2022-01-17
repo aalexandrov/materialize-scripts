@@ -20,90 +20,120 @@
                             <h1 class="text-center">Explain Plan Repository</h1>
                         </div>
                     </div>
-                    <div class="row" id="display-mode">
-                        <div class="col">
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="raw-plan" />
-                                <label class="custom-control-label" for="raw-plan">raw plan</label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="typed-raw-plan" />
-                                <label class="custom-control-label" for="typed-raw-plan">raw plan (typed)</label>
+                    <form>
+                        <div class="row mt-3">
+                            <div class="col">
+                                <h2>Display Settings</h2>
                             </div>
                         </div>
+                        <fieldset class="row mt-3" id="display-mode">
+                            <legend class="col-12">Plans to show</legend>
+                            <div class="col">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="raw-plan" />
+                                    <label class="custom-control-label" for="raw-plan">raw plan</label>
+                                </div>
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="typed-raw-plan" />
+                                    <label class="custom-control-label" for="typed-raw-plan">raw plan (typed)</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="decorrelated-plan" />
+                                    <label class="custom-control-label" for="decorrelated-plan">decorrelated plan</label>
+                                </div>
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="typed-decorrelated-plan" />
+                                    <label class="custom-control-label" for="typed-decorrelated-plan">decorrelated plan (typed)</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="optimized-plan" />
+                                    <label class="custom-control-label" for="optimized-plan">optimized plan</label>
+                                </div>
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="typed-optimized-plan" />
+                                    <label class="custom-control-label" for="typed-optimized-plan">optimized plan (typed)</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="query-graph" />
+                                    <label class="custom-control-label" for="query-graph">query graph</label>
+                                </div>
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" value="" id="typed-query-graph" />
+                                    <label class="custom-control-label" for="typed-query-graph">query graph (typed)</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="row mt-3" id="output-format">
+                            <legend class="col-12">Output type</legend>
+                            <div class="col-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="output-format" id="output-format-svg" value=".svg" checked="checked" />
+                                    <label class="form-check-label" for="output-format-svg">SVG</label>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="output-format" id="output-format-png" value=".png" />
+                                    <label class="form-check-label" for="output-format-png">PNG</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <div class="row mt-3">
                         <div class="col">
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="decorrelated-plan" />
-                                <label class="custom-control-label" for="decorrelated-plan">decorrelated plan</label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="typed-decorrelated-plan" />
-                                <label class="custom-control-label" for="typed-decorrelated-plan">decorrelated plan (typed)</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="optimized-plan" />
-                                <label class="custom-control-label" for="optimized-plan">optimized plan</label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="typed-optimized-plan" />
-                                <label class="custom-control-label" for="typed-optimized-plan">optimized plan (typed)</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="query-graph" />
-                                <label class="custom-control-label" for="query-graph">query graph</label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input class="custom-control-input" type="checkbox" value="" id="typed-query-graph" />
-                                <label class="custom-control-label" for="typed-query-graph">query graph (typed)</label>
-                            </div>
+                            <h2>Queries</h2>
                         </div>
                     </div>
                     <xsl:for-each select="./queries/query">
                         <hr />
                         <div class="row" style="margin-bottom: .5rem">
-                            <blockquote class="blockquote" style="display: block; width: 100%;">
-                                <pre><code><xsl:value-of select="./sql"/></code></pre>
-                            </blockquote>
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Q-{id}" aria-expanded="false" aria-controls="Q-{id}">
-                                toggle plans
-                            </button>
+                            <div class="col-12">
+                                <blockquote class="blockquote" style="display: block; width: 100%;">
+                                    <pre><code><xsl:value-of select="./sql"/></code></pre>
+                                </blockquote>
+                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Q-{id}" aria-expanded="false" aria-controls="Q-{id}">
+                                    toggle plans
+                                </button>
+                            </div>
                         </div>
                         <div class="row collapse" id="Q-{id}">
                             <div class="col mode-raw-plan d-none">
                                 <h4 class="text-center">raw plan</h4>
-                                <img src="{id}/raw-plan.svg" alt="raw" class="img-fluid" />
+                                <img src="{id}/raw-plan.svg" alt="raw" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-raw-plan d-none">
                                 <h4 class="text-center">raw plan (typed)</h4>
-                                <img src="{id}/typed-raw-plan.svg" alt="raw" class="img-fluid" />
+                                <img src="{id}/typed-raw-plan.svg" alt="raw" class="plan img-fluid" />
                             </div>
                             <div class="col mode-decorrelated-plan d-none">
                                 <h4 class="text-center">decorrelated plan</h4>
-                                <img src="{id}/decorrelated-plan.svg" alt="decorrelated" class="img-fluid" />
+                                <img src="{id}/decorrelated-plan.svg" alt="decorrelated" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-decorrelated-plan d-none">
                                 <h4 class="text-center">decorrelated plan (typed)</h4>
-                                <img src="{id}/typed-decorrelated-plan.svg" alt="decorrelated" class="img-fluid" />
+                                <img src="{id}/typed-decorrelated-plan.svg" alt="decorrelated" class="plan img-fluid" />
                             </div>
                             <div class="col mode-optimized-plan d-none">
                                 <h4 class="text-center">optimized plan</h4>
-                                <img src="{id}/optimized-plan.svg" alt="optimized" class="img-fluid" />
+                                <img src="{id}/optimized-plan.svg" alt="optimized" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-optimized-plan d-none">
                                 <h4 class="text-center">optimized plan (typed)</h4>
-                                <img src="{id}/typed-optimized-plan.svg" alt="optimized" class="img-fluid" />
+                                <img src="{id}/typed-optimized-plan.svg" alt="optimized" class="plan img-fluid" />
                             </div>
-                            <div class="col mode-optimized-plan d-none">
+                            <div class="col mode-query-graph d-none">
                                 <h4 class="text-center">query graph</h4>
-                                <img src="{id}/query-graph.svg" alt="optimized" class="img-fluid" />
+                                <img src="{id}/query-graph.svg" alt="optimized" class="plan img-fluid" />
                             </div>
-                            <div class="col mode-typed-optimized-plan d-none">
+                            <div class="col mode-typed-query-graph d-none">
                                 <h4 class="text-center">query graph (typed)</h4>
-                                <img src="{id}/typed-query-graph.svg" alt="optimized" class="img-fluid" />
+                                <img src="{id}/typed-query-graph.svg" alt="optimized" class="plan img-fluid" />
                             </div>
                         </div>
                     </xsl:for-each>
