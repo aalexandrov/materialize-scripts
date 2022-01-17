@@ -26,45 +26,45 @@
                                 <h2>Display Settings</h2>
                             </div>
                         </div>
-                        <fieldset class="row mt-3" id="display-mode">
+                        <fieldset class="row mt-3" id="display-plan">
                             <legend class="col-12">Plans to show</legend>
                             <div class="col">
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="raw-plan" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="raw-plan" />
                                     <label class="custom-control-label" for="raw-plan">raw plan</label>
                                 </div>
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="typed-raw-plan" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="typed-raw-plan" />
                                     <label class="custom-control-label" for="typed-raw-plan">raw plan (typed)</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="decorrelated-plan" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="decorrelated-plan" />
                                     <label class="custom-control-label" for="decorrelated-plan">decorrelated plan</label>
                                 </div>
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="typed-decorrelated-plan" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="typed-decorrelated-plan" />
                                     <label class="custom-control-label" for="typed-decorrelated-plan">decorrelated plan (typed)</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="optimized-plan" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="optimized-plan" />
                                     <label class="custom-control-label" for="optimized-plan">optimized plan</label>
                                 </div>
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="typed-optimized-plan" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="typed-optimized-plan" />
                                     <label class="custom-control-label" for="typed-optimized-plan">optimized plan (typed)</label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="query-graph" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="query-graph" />
                                     <label class="custom-control-label" for="query-graph">query graph</label>
                                 </div>
                                 <div class="custom-control custom-switch">
-                                    <input class="custom-control-input" type="checkbox" value="" id="typed-query-graph" />
+                                    <input class="custom-control-input" type="checkbox" value="display-mode" id="typed-query-graph" />
                                     <label class="custom-control-label" for="typed-query-graph">query graph (typed)</label>
                                 </div>
                             </div>
