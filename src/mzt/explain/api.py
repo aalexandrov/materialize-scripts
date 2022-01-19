@@ -30,11 +30,14 @@ class ExplainMode(Enum):
     def __str__(self) -> str:
         return self.value
 
-    def untyped_plans() -> List["ExplainMode"]:
+    def qgm_plans() -> List["ExplainMode"]:
+        return [ExplainMode.QUERY_GRAPH, ExplainMode.TYPED_QUERY_GRAPH]
+
+    def list(qgm: bool) -> List["ExplainMode"]:
         return [
-            ExplainMode.RAW_PLAN,
-            ExplainMode.DECORRELATED_PLAN,
-            ExplainMode.OPTIMIZED_PLAN,
+            mode
+            for mode in iter(ExplainMode)
+            if qgm or mode not in ExplainMode.qgm_plans()
         ]
 
 
