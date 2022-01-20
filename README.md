@@ -89,5 +89,13 @@ To update all images in an existing repository:
 ```bash
 for f in $(find $MZT_REPOSITORY -name 'query.sql'); do 
     mzt explain repository add "$(cat $f)";
-done 
+done
+```
+
+To delete all images in an existing repository:
+
+```bash
+for f in $(find $MZT_REPOSITORY -name 'query.sql'); do 
+    mzt explain repository remove "$(cat $f)";
+done
 ```
