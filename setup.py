@@ -16,7 +16,7 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     package_data={
-        "mzt.explain.repository.api": ["*.xml", "*.xsl", "*.css", "*.js"],
+        "mzt.explain.repository": ["*.xml", "*.xsl", "*.css", "*.js"],
     },
     install_requires=[
         "click==8.0.3",
