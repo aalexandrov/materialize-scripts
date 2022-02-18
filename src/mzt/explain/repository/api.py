@@ -35,7 +35,7 @@ class Repository:
                 else:
                     os.symlink(resource_path(file), self.root / file)
 
-    def add(self, query: str, qgm: bool, **kwargs) -> None:
+    def add(self, query: str, **kwargs) -> None:
         """Add an entry for a query from the repository."""
         logging.info(f"add entry {hash(query)} to the repository at '{self.root}'")
 
@@ -49,7 +49,8 @@ class Repository:
         query_path.write_text(query.strip() + "\n", "utf8")
 
         # iterate over explain modes
-        for mode in mzt.explain.api.ExplainMode.list(qgm):
+        modes = mzt.explain.api.ExplainMode.list(kwargs.get("db_qgm_enabled", False))
+        for mode in modes:
             # generate dot files for mode
             dot_path = entry_path / f"{mode}.dot"
             with dot_path.open("wt") as dot_file:

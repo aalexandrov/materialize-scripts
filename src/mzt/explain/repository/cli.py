@@ -40,29 +40,23 @@ class Opt:
         callback=lambda _ctx, _param, value: Path(value),
     )
 
-    QGM = dict(
-        default=False,
-        envvar="MZT_QGM",
-        help="Generate QGM plans.",
-    )
-
 
 @command.command()
 @click.argument("query", **mzt.explain.cli.Arg.QUERY)
 @click.option("--repository", **Opt.REPOSITORY)
-@click.option("--qgm/--no-qgm", **Opt.QGM)
 @click.option("--db-port", **mzt.cli.BaseOpt.DB_PORT)
 @click.option("--db-host", **mzt.cli.BaseOpt.DB_HOST)
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
+@click.option("--db-qgm-enabled", **mzt.cli.BaseOpt.DB_QGM_ENABLED)
 @mzt.cli.is_documented_by(mzt.explain.repository.api.Repository.add)
-def add(query: str, repository: Path, qgm: bool, **kwargs) -> None:
+def add(query: str, repository: Path, **kwargs) -> None:
     try:
         hash = mzt.explain.repository.api.hash(query)
         mzt.cli.info(f"adding entry {hash} to repository at '{repository}'")
 
         repo = mzt.explain.repository.api.Repository(repository)
-        repo.add(query, qgm, **kwargs)
+        repo.add(query, **kwargs)
     except Exception as e:
         raise click.ClickException(f"run command failed: {e}")
 
@@ -74,6 +68,7 @@ def add(query: str, repository: Path, qgm: bool, **kwargs) -> None:
 @click.option("--db-host", **mzt.cli.BaseOpt.DB_HOST)
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
+@click.option("--db-qgm-enabled", **mzt.cli.BaseOpt.DB_QGM_ENABLED)
 @mzt.cli.is_documented_by(mzt.explain.repository.api.Repository.remove)
 def remove(query: str, repository: Path, **kwargs) -> None:
     try:

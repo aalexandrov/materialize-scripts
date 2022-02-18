@@ -74,6 +74,14 @@ def connect(
     db_host: str,
     db_name: str,
     db_user: str,
+    db_qgm_enabled: bool,
     **kwargs,
 ) -> psycopg2.extensions.connection:
-    return psycopg2.connect(host=db_host, port=db_port, database=db_name, user=db_user)
+    conn = psycopg2.connect(host=db_host, port=db_port, database=db_name, user=db_user)
+
+    # optionally, enable the QGM stage in the optimizer
+    if db_qgm_enabled:
+        with conn.cursor() as cursor:
+            cursor.execute(f"SET qgm_optimizations_experimental = true")
+
+    return conn

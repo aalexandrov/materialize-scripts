@@ -49,6 +49,12 @@ class BaseOpt:
         envvar="MZT_DB_USER",
     )
 
+    DB_QGM_ENABLED = dict(
+        default=False,
+        help="Enable QGM state in the DB optimizer.",
+        envvar="MZT_DB_QGM_ENABLED",
+    )
+
 
 # Utility methods
 # ---------------
