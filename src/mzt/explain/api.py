@@ -8,7 +8,7 @@
 # by the Apache License, Version 2.0.
 
 from enum import Enum
-from typing import TextIO, List
+from typing import List, Set, TextIO
 
 import psycopg2
 import psycopg2.extensions
@@ -17,21 +17,27 @@ import mzt.dot.api
 
 class ExplainMode(Enum):
     RAW_PLAN = "raw-plan"
+    QUERY_GRAPH = "query-graph"
+    OPTIMIZED_QUERY_GRAPH = "optimized-query-graph"
     DECORRELATED_PLAN = "decorrelated-plan"
     OPTIMIZED_PLAN = "optimized-plan"
 
     TYPED_RAW_PLAN = "typed-raw-plan"
+    TYPED_QUERY_GRAPH = "typed-query-graph"
+    TYPED_OPTIMIZED_QUERY_GRAPH = "typed-optimized-query-graph"
     TYPED_DECORRELATED_PLAN = "typed-decorrelated-plan"
     TYPED_OPTIMIZED_PLAN = "typed-optimized-plan"
-
-    QUERY_GRAPH = "query-graph"
-    TYPED_QUERY_GRAPH = "typed-query-graph"
 
     def __str__(self) -> str:
         return self.value
 
-    def qgm_plans() -> List["ExplainMode"]:
-        return [ExplainMode.QUERY_GRAPH, ExplainMode.TYPED_QUERY_GRAPH]
+    def qgm_plans() -> Set["ExplainMode"]:
+        return {
+            ExplainMode.QUERY_GRAPH,
+            ExplainMode.OPTIMIZED_QUERY_GRAPH,
+            ExplainMode.TYPED_QUERY_GRAPH,
+            ExplainMode.TYPED_OPTIMIZED_QUERY_GRAPH,
+        }
 
     def list(qgm: bool) -> List["ExplainMode"]:
         return [
@@ -47,7 +53,7 @@ def query(out: TextIO, query: str, mode: ExplainMode, **kwargs) -> None:
     with connect(**kwargs) as conn, conn.cursor() as cursor:
         cursor.execute(f"EXPLAIN {str(mode).replace('-', ' ').upper()} FOR {query}")
         lines = cursor.fetchone()[0].splitlines()
-        if mode not in [ExplainMode.QUERY_GRAPH, ExplainMode.TYPED_QUERY_GRAPH]:
+        if mode not in ExplainMode.qgm_plans():
             mzt.dot.api.generate_graph(out, lines)
         else:
             out.write("\n".join(lines) + "\n")
