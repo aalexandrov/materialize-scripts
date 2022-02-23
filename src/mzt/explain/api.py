@@ -7,10 +7,9 @@
 # the Business Source License, use of this software will be governed
 # by the Apache License, Version 2.0.
 
-from ast import Dict
 from enum import Enum
 import re
-from typing import List, Set, TextIO, Tuple
+from typing import Dict, List, Set, TextIO, Tuple
 
 import psycopg2
 import psycopg2.extensions
@@ -106,4 +105,4 @@ def parse_set_vars_prefix(query: str) -> Tuple[Dict[str, str], str]:
     # treat the remainder as the actual query
     query = query[pos:]
 
-    return (set_options, query)
+    return set_options, query

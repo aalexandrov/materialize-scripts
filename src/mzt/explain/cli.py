@@ -39,7 +39,6 @@ class Arg:
 @click.option("--db-host", **mzt.cli.BaseOpt.DB_HOST)
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
-@click.option("--db-qgm-enabled", **mzt.cli.BaseOpt.DB_QGM_ENABLED)
 @mzt.cli.is_documented_by(mzt.explain.api.query)
 def query(query: str, mode: mzt.explain.api.ExplainMode, **kwargs) -> None:
     try:
@@ -55,7 +54,6 @@ def query(query: str, mode: mzt.explain.api.ExplainMode, **kwargs) -> None:
 @click.option("--db-host", **mzt.cli.BaseOpt.DB_HOST)
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
-@click.option("--db-qgm-enabled", **mzt.cli.BaseOpt.DB_QGM_ENABLED)
 @mzt.cli.is_documented_by(mzt.explain.api.view)
 def view(view: str, mode: mzt.explain.api.ExplainMode, **kwargs) -> None:
     try:
