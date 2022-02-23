@@ -48,8 +48,13 @@ class Repository:
         query_path = entry_path / f"query.sql"
         query_path.write_text(query.strip() + "\n", "utf8")
 
+        # the query string can be optionally prefixed with `SET <option> = <value>;`
+        # statements, and we need to extract those as they guide the following work
+        vars, _ = mzt.explain.api.parse_set_vars_prefix(query)
+
         # iterate over explain modes
-        modes = mzt.explain.api.ExplainMode.list(kwargs.get("db_qgm_enabled", False))
+        qgm_enabled = bool(vars.get("qgm_optimizations_experimental", False))
+        modes = mzt.explain.api.ExplainMode.list(qgm_enabled)
         for mode in modes:
             # generate dot files for mode
             dot_path = entry_path / f"{mode}.dot"

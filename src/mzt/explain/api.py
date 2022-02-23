@@ -7,8 +7,10 @@
 # the Business Source License, use of this software will be governed
 # by the Apache License, Version 2.0.
 
+from ast import Dict
 from enum import Enum
-from typing import List, Set, TextIO
+import re
+from typing import List, Set, TextIO, Tuple
 
 import psycopg2
 import psycopg2.extensions
@@ -50,9 +52,20 @@ class ExplainMode(Enum):
 def query(out: TextIO, query: str, mode: ExplainMode, **kwargs) -> None:
     """Dot graph for 'EXPLAIN {mode} FOR {query}'."""
 
+    # the query string can be optionally prefixed with `SET <option> = <value>;`
+    # statements, so we need to parse those before doing the work
+    vars, query = parse_set_vars_prefix(query)
+
     with connect(**kwargs) as conn, conn.cursor() as cursor:
+        # prepare ocnnection environment by executing all set_option statements
+        for key, val in vars.items():
+            cursor.execute(f"SET {key} = {val}")
+
+        # explain the plan in the requested mode
         cursor.execute(f"EXPLAIN {str(mode).replace('-', ' ').upper()} FOR {query}")
         lines = cursor.fetchone()[0].splitlines()
+
+        # for non-QGM plans, convert the ASCII output to a dot graph
         if mode not in ExplainMode.qgm_plans():
             mzt.dot.api.generate_graph(out, lines)
         else:
@@ -74,14 +87,23 @@ def connect(
     db_host: str,
     db_name: str,
     db_user: str,
-    db_qgm_enabled: bool,
     **kwargs,
 ) -> psycopg2.extensions.connection:
-    conn = psycopg2.connect(host=db_host, port=db_port, database=db_name, user=db_user)
+    return psycopg2.connect(host=db_host, port=db_port, database=db_name, user=db_user)
 
-    # optionally, enable the QGM stage in the optimizer
-    if db_qgm_enabled:
-        with conn.cursor() as cursor:
-            cursor.execute(f"SET qgm_optimizations_experimental = true")
 
-    return conn
+def parse_set_vars_prefix(query: str) -> Tuple[Dict[str, str], str]:
+    # matches a statement of the form "SET <option> = <value>;"
+    pat = re.compile(r"\s*SET\s*(?P<key>\w+)\s*=\s*(?P<val>\w+)\s*;\s*")
+
+    # find and extract a prefix zero or more SET statements
+    set_options = {}
+    mat, pos = pat.search(query, 0), 0
+    while mat:
+        set_options[mat.group("key").lower()] = mat.group("val").lower()
+        mat, pos = pat.search(query, mat.end()), mat.end()
+
+    # treat the remainder as the actual query
+    query = query[pos:]
+
+    return (set_options, query)
