@@ -4,6 +4,8 @@ The `mzt` package contains optimizer tools for Materialize developers.
 
 ## Installation (`pyenv`)
 
+*Note*: This assumes that you already have [`pyenv`](https://github.com/pyenv/pyenv) and [`pyenv-virtualenv`](https://github.com/pyenv/pyenv-virtualenv) installed and working in your shell.
+
 We need a Python version higher than `3.9.x`
 
 ```bash
