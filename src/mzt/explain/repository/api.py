@@ -25,11 +25,11 @@ class Repository:
         """initialize folder structure if needed"""
 
         self.root = root
-        
+
         if not self.root.exists():
             logging.info(f"initialize new repository in {self.root}")
             self.root.mkdir(parents=True)
-        
+
         for ext in ["js", "css", "xml", "xsl"]:
             file = f"index.{ext}"
             if not (self.root / file).exists():
@@ -39,7 +39,7 @@ class Repository:
                 else:
                     logging.info(f"create soft link to {self.root / file}")
                     os.symlink(resource_path(file), self.root / file)
-        
+
         for ext in ["svg", "png"]:
             file = f"not_available.{ext}"
             if not (self.root / file).exists():
@@ -55,30 +55,37 @@ class Repository:
         if not entry_path.exists():
             entry_path.mkdir(parents=True)
 
-        # qrite query to file
-        query_path = entry_path / f"query.sql"
-        query_path.write_text(query.strip() + "\n", "utf8")
+        try:
+            # qrite query to file
+            query_path = entry_path / f"query.sql"
+            query_path.write_text(query.strip() + "\n", "utf8")
 
-        # the query string can be optionally prefixed with `SET <option> = <value>;`
-        # statements, and we need to extract those as they guide the following work
-        vars, _ = mzt.explain.api.parse_set_vars_prefix(query)
+            # the query string can be optionally prefixed with `SET <option> = <value>;`
+            # statements, and we need to extract those as they guide the following work
+            vars, _ = mzt.explain.api.parse_set_vars_prefix(query)
 
-        # iterate over explain modes
-        qgm_enabled = bool(vars.get("qgm_optimizations_experimental", False))
-        modes = mzt.explain.api.ExplainMode.list(qgm_enabled)
-        for mode in modes:
-            # generate dot files for mode
-            dot_path = entry_path / f"{mode}.dot"
-            with dot_path.open("wt") as dot_file:
-                mzt.explain.api.query(dot_file, query, mode, **kwargs)
+            # iterate over explain modes
+            qgm_enabled = bool(vars.get("qgm_optimizations_experimental", False))
+            modes = mzt.explain.api.ExplainMode.list(qgm_enabled)
+            for mode in modes:
+                # generate dot files for mode
+                dot_path = entry_path / f"{mode}.dot"
+                with dot_path.open("wt") as dot_file:
+                    mzt.explain.api.query(dot_file, query, mode, **kwargs)
 
-            # generate png files mode
-            for format in ["svg", "png"]:
-                img_path = entry_path / f"{mode}.{format}"
-                check_call(["dot", "-T", format, str(dot_path), "-o", str(img_path)])
-
-        # re-index
-        self.index()
+                # generate png files mode
+                for format in ["svg", "png"]:
+                    img_path = entry_path / f"{mode}.{format}"
+                    check_call(
+                        ["dot", "-T", format, str(dot_path), "-o", str(img_path)]
+                    )
+        except Exception as e:
+            logging.info(f"error occurred for entry {hash(query)}: {e}")
+            shutil.rmtree(entry_path)
+            raise e
+        finally:
+            # re-index
+            self.index()
 
     def remove(self, query: str, **kwargs) -> None:
         """Remove the entry for a query to the repository."""

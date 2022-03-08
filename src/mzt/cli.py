@@ -7,7 +7,7 @@
 # the Business Source License, use of this software will be governed
 # by the Apache License, Version 2.0.
 
-from typing import Any
+from typing import Any, IO, Optional
 import click
 
 
@@ -62,9 +62,14 @@ def is_documented_by(original: Any) -> Any:
     return wrapper
 
 
-def info(msg: str, fg: str = "green") -> None:
-    click.secho(msg, fg=fg)
+def info(msg: str, fg: str = "green", file: Optional[IO] = None) -> None:
+    click.secho(msg, fg=fg, file=file)
 
 
-def err(msg: str, fg: str = "red") -> None:
-    click.secho(msg, fg=fg, err=True)
+def err(msg: str, fg: str = "red", file: Optional[IO] = None) -> None:
+    click.secho(msg, fg=fg, err=True, file=file)
+
+
+class MztException(click.ClickException):
+    def show(self, file: Optional[IO] = None) -> None:
+        err(f"Error: {self.format_message()}", file=file)

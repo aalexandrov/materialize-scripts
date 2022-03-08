@@ -10,6 +10,9 @@
 from pathlib import Path
 
 import click
+import psycopg2
+import traceback
+
 import mzt.cli
 import mzt.explain.cli
 import mzt.explain.repository.api
@@ -56,8 +59,11 @@ def add(query: str, repository: Path, **kwargs) -> None:
 
         repo = mzt.explain.repository.api.Repository(repository)
         repo.add(query, **kwargs)
+    except psycopg2.DatabaseError as e:
+        raise mzt.cli.MztException(f"'repository add' command failed: {e}")
     except Exception as e:
-        raise click.ClickException(f"run command failed: {e}")
+        message = traceback.format_exc()
+        raise mzt.cli.MztException(f"'repository add' command failed:\n{message}")
 
 
 @command.command()
@@ -76,4 +82,5 @@ def remove(query: str, repository: Path, **kwargs) -> None:
         repo = mzt.explain.repository.api.Repository(repository)
         repo.remove(query, **kwargs)
     except Exception as e:
-        raise click.ClickException(f"run command failed: {e}")
+        message = traceback.format_exc()
+        raise mzt.cli.MztException(f"'repository remove' command failed:\n{message}")

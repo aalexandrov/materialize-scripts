@@ -9,6 +9,8 @@
 
 import click
 import sys
+import psycopg2
+import traceback
 
 import mzt.cli
 import mzt.explain.api
@@ -43,8 +45,11 @@ class Arg:
 def query(query: str, mode: mzt.explain.api.ExplainMode, **kwargs) -> None:
     try:
         mzt.explain.api.query(sys.stdout, query, mode, **kwargs)
+    except psycopg2.DatabaseError as e:
+        raise mzt.cli.MztException(f"'explain query' command failed: {e}")
     except Exception as e:
-        raise click.ClickException(f"run command failed: {e}")
+        message = traceback.format_exc()
+        raise mzt.cli.MztException(f"'explain query' command failed:\n{message}")
 
 
 @command.command()
@@ -58,5 +63,8 @@ def query(query: str, mode: mzt.explain.api.ExplainMode, **kwargs) -> None:
 def view(view: str, mode: mzt.explain.api.ExplainMode, **kwargs) -> None:
     try:
         mzt.explain.api.view(sys.stdout, view, mode, **kwargs)
+    except psycopg2.DatabaseError as e:
+        raise mzt.cli.MztException(f"'explain view' command failed: {e}")
     except Exception as e:
-        raise click.ClickException(f"run command failed: {e}")
+        message = traceback.format_exc()
+        raise mzt.cli.MztException(f"'explain view' command failed:\n{message}")
