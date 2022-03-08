@@ -22,18 +22,29 @@ from pkg_resources import resource_filename
 
 class Repository:
     def __init__(self, root: Path) -> None:
-        self.root = root
+        """initialize folder structure if needed"""
 
-        # initialize folder structure if needed
+        self.root = root
+        
         if not self.root.exists():
             logging.info(f"initialize new repository in {self.root}")
             self.root.mkdir(parents=True)
-            for ext in ["js", "css", "xml", "xsl"]:
-                file = f"index.{ext}"
+        
+        for ext in ["js", "css", "xml", "xsl"]:
+            file = f"index.{ext}"
+            if not (self.root / file).exists():
                 if ext == "xml":
+                    logging.info(f"copy initial {self.root / file}")
                     shutil.copy(resource_path(file), self.root / file)
                 else:
+                    logging.info(f"create soft link to {self.root / file}")
                     os.symlink(resource_path(file), self.root / file)
+        
+        for ext in ["svg", "png"]:
+            file = f"not_available.{ext}"
+            if not (self.root / file).exists():
+                logging.info(f"create soft link to {self.root / file}")
+                os.symlink(resource_path(file), self.root / file)
 
     def add(self, query: str, **kwargs) -> None:
         """Add an entry for a query from the repository."""

@@ -109,43 +109,43 @@
                         <div class="row collapse" id="Q-{id}">
                             <div class="col mode-raw-plan d-none">
                                 <h4 class="text-center">raw plan</h4>
-                                <img src="{id}/raw-plan.svg" alt="raw" class="plan img-fluid" />
+                                <img src="{id}/raw-plan.svg" alt="raw-plan" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-raw-plan d-none">
                                 <h4 class="text-center">typed raw plan</h4>
-                                <img src="{id}/typed-raw-plan.svg" alt="raw" class="plan img-fluid" />
+                                <img src="{id}/typed-raw-plan.svg" alt="typed-raw-plan" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-query-graph d-none">
                                 <h4 class="text-center">query graph</h4>
-                                <img src="{id}/query-graph.svg" alt="optimized" class="plan img-fluid" />
+                                <img src="{id}/query-graph.svg" alt="query-graph" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-query-graph d-none">
                                 <h4 class="text-center">typed query graph</h4>
-                                <img src="{id}/typed-query-graph.svg" alt="optimized" class="plan img-fluid" />
+                                <img src="{id}/typed-query-graph.svg" alt="typed-query-graph" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-optimized-query-graph d-none">
                                 <h4 class="text-center">optimized query graph</h4>
-                                <img src="{id}/optimized-query-graph.svg" alt="optimized" class="plan img-fluid" />
+                                <img src="{id}/optimized-query-graph.svg" alt="optimized-query-graph" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-optimized-query-graph d-none">
                                 <h4 class="text-center">typed optimized query graph</h4>
-                                <img src="{id}/typed-optimized-query-graph.svg" alt="optimized" class="plan img-fluid" />
+                                <img src="{id}/typed-optimized-query-graph.svg" alt="typed-optimized-query-graph" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-decorrelated-plan d-none">
                                 <h4 class="text-center">decorrelated plan</h4>
-                                <img src="{id}/decorrelated-plan.svg" alt="decorrelated" class="plan img-fluid" />
+                                <img src="{id}/decorrelated-plan.svg" alt="decorrelated-plan" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-decorrelated-plan d-none">
                                 <h4 class="text-center">typed decorrelated plan</h4>
-                                <img src="{id}/typed-decorrelated-plan.svg" alt="decorrelated" class="plan img-fluid" />
+                                <img src="{id}/typed-decorrelated-plan.svg" alt="typed-decorrelated-plan" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-optimized-plan d-none">
                                 <h4 class="text-center">optimized plan</h4>
-                                <img src="{id}/optimized-plan.svg" alt="optimized" class="plan img-fluid" />
+                                <img src="{id}/optimized-plan.svg" alt="optimized-plan" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                             <div class="col mode-typed-optimized-plan d-none">
                                 <h4 class="text-center">typed optimized plan</h4>
-                                <img src="{id}/typed-optimized-plan.svg" alt="optimized" class="plan img-fluid" />
+                                <img src="{id}/typed-optimized-plan.svg" alt="typed-optimized-plan" onerror="this.src='not_available.png'" class="plan img-fluid" />
                             </div>
                         </div>
                     </xsl:for-each>
