@@ -7,16 +7,16 @@ def node(x: str) -> str:
 
 
 def label(l: str) -> str:
-    r = l
-    r = r.strip(" \n")
-    r = r.replace("\n", "\\l")
+    r = "\n" + l.strip(" \n") + "\n"
     r = r.replace('"', '\\"')
-    r = r.replace("|", "")
+    r = r.replace("\n| |", "\n| -")
+    r = r.replace("| ", "")
     r = r.replace(">", "\\>")
     r = r.replace("<", "\\<")
     r = r.replace("{", "\\{")
     r = r.replace("}", "\\}")
-    r = r + "\\l"
+    r = r.strip(" \n")
+    r = r.replace("\n", "\\l") + "\\l"
     return r
 
 
@@ -25,15 +25,20 @@ def generate_graph(out: TextIO, lines: List[str], title: Optional[str] = None) -
     edges = set()
     current_node = None
 
+    # print("-" * 80)
+    # print("\n".join(lines))
+    # print("-" * 80)
+
     for line in lines:
         if line.startswith("%"):
             current_node = dict()
             current_node["name"] = line[: line.find(" ")]
-            current_node["text"] = line[line.find("=", 1) + 1 :]
+            current_node["text"] = ""
         elif len(line) == 0:
-            nodes.append(current_node)
+            if current_node is not None:
+                nodes.append(current_node)
             current_node = None
-        else:
+        elif current_node is not None:
             current_node["text"] += "\n" + line
 
     if current_node is not None:
