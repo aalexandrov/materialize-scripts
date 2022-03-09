@@ -34,13 +34,13 @@ The `explain` subcommand provides facilities for deriving `*.dot` files from the
 Check the command `--help` for details:
 
 ```bash
-mzcli explain --help
+mzt explain --help
 ```
 
 Example:
 
 ```bash
-mzt explain query raw 'select a, b from (VALUES (1, 2)) AS R(a,b)'
+mzt explain query raw-plan 'select a, b from (VALUES (1, 2)) AS R(a,b)'
 ```
 
 Output:
@@ -57,7 +57,7 @@ The `explain repository` subcommand provides an interface for curating repositor
 Check the command `--help` for details:
 
 ```bash
-mzcli explain repository --help
+mzt explain repository --help
 ```
 
 Example:
