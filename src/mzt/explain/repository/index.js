@@ -43,6 +43,11 @@ $(document).ready(function () {
         });
     });
 
+    // clipboard buttons handler
+    $('button.clipboard').click(function () {
+        navigator.clipboard.writeText($(this).data('content'));
+    });
+
     // save state to local storage when data is changed
     $('input').click(function () {
         state.save();

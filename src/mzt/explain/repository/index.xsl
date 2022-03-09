@@ -104,6 +104,9 @@
                                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#Q-{id}" aria-expanded="false" aria-controls="Q-{id}">
                                     toggle plans
                                 </button>
+                                <button class="btn btn-primary clipboard" type="button" style="margin-left: 0.5em;" data-content="{id}">
+                                    copy query hash
+                                </button>
                             </div>
                         </div>
                         <div class="row collapse" id="Q-{id}">
