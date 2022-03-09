@@ -25,9 +25,7 @@ def generate_graph(out: TextIO, lines: List[str], title: Optional[str] = None) -
     edges = set()
     current_node = None
 
-    # print("-" * 80)
-    # print("\n".join(lines))
-    # print("-" * 80)
+    get_line_pattern = re.compile(r"Get (?P<name>%\d+) \(\w+\)")
 
     for line in lines:
         if line.startswith("%"):
@@ -39,7 +37,11 @@ def generate_graph(out: TextIO, lines: List[str], title: Optional[str] = None) -
                 nodes.append(current_node)
             current_node = None
         elif current_node is not None:
-            current_node["text"] += "\n" + line
+            get_line = get_line_pattern.search(line)
+            if get_line:
+                edges.add((get_line["name"], current_node["name"]))
+            else:
+                current_node["text"] += "\n" + line
 
     if current_node is not None:
         nodes.append(current_node)
