@@ -16,8 +16,17 @@ import click
 
 
 @click.group()
-def command() -> None:
-    pass
+@click.option("--debug", is_flag=True, default=False)
+def command(debug: bool) -> None:
+    if debug:
+        import logging
+
+        logging.basicConfig(
+            encoding="utf-8",
+            level=logging.DEBUG,
+            format=r"- %(asctime)s %(levelname)s %(message)s",
+            datefmt=r"%m/%d/%Y %I:%M:%S %p",
+        )
 
 
 # Base Options & Args

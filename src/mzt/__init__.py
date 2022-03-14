@@ -13,15 +13,6 @@ import mzt.cli
 import mzt.explain.cli
 import mzt.explain.repository.cli
 
-# import logging
-#
-# logging.basicConfig(
-#     encoding="utf-8",
-#     level=logging.DEBUG,
-#     format=r"- %(asctime)s %(levelname)s %(message)s",
-#     datefmt=r"%m/%d/%Y %I:%M:%S %p",
-# )
-
 
 def main() -> None:
     mzt.cli.command(auto_envvar_prefix="MZT")
