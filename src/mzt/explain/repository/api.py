@@ -8,16 +8,18 @@
 # by the Apache License, Version 2.0.
 
 
+from codecs import ignore_errors
 import hashlib
 import os
 import shutil
 import logging
 import lxml.etree as ET
+import psycopg2
 from pathlib import Path
+from pkg_resources import resource_filename
 from subprocess import check_call
 
 import mzt.explain.api
-from pkg_resources import resource_filename
 
 
 class Repository:
@@ -68,19 +70,27 @@ class Repository:
             qgm_enabled = bool(vars.get("qgm_optimizations_experimental", False))
             modes = mzt.explain.api.ExplainMode.list(qgm_enabled)
             for mode in modes:
-                # generate dot files for mode
-                dot_path = entry_path / f"{mode}.dot"
-                with dot_path.open("wt") as dot_file:
-                    mzt.explain.api.query(dot_file, query, mode, **kwargs)
+                try:
+                    # generate dot files for mode
+                    dot_path = entry_path / f"{mode}.dot"
+                    with dot_path.open("wt") as dot_file:
+                        mzt.explain.api.query(dot_file, query, mode, **kwargs)
 
-                # generate png files mode
-                for format in ["svg", "png"]:
-                    img_path = entry_path / f"{mode}.{format}"
-                    check_call(
-                        ["dot", "-T", format, str(dot_path), "-o", str(img_path)]
-                    )
+                    # generate png files mode
+                    for format in ["svg", "png"]:
+                        img_path = entry_path / f"{mode}.{format}"
+                        check_call(
+                            ["dot", "-T", format, str(dot_path), "-o", str(img_path)]
+                        )
+                except psycopg2.DatabaseError as e:
+                    logging.info(f"error for entry {hash(query)} ({mode}): {e}".strip())
+                    # remove png files
+                    for format in ["svg", "png"]:
+                        img_path = entry_path / f"{mode}.{format}"
+                        shutil.rmtree(img_path, ignore_errors=True)
+
         except Exception as e:
-            logging.info(f"error occurred for entry {hash(query)}: {e}")
+            logging.info(f"error for entry {hash(query)}: {e}".strip())
             shutil.rmtree(entry_path)
             raise e
         finally:
