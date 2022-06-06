@@ -24,29 +24,29 @@ import mzt.explain.api
 
 class Repository:
     def __init__(self, root: Path) -> None:
-        """initialize folder structure if needed"""
-
+        """deletgate to self.init()"""
         self.root = root
+        self.init(force=False)
+
+    def init(self, force: bool) -> None:
+        """initialize folder structure if needed"""
 
         if not self.root.exists():
             logging.info(f"initialize new repository in {self.root}")
             self.root.mkdir(parents=True)
 
+        def copy_file(file: str) -> None:
+            if (force and file != "index.xml") or not (self.root / file).exists():
+                logging.info(f"copy {self.root / file}")
+                shutil.copy(resource_path(file), self.root / file)
+
         for ext in ["js", "css", "xml", "xsl"]:
             file = f"index.{ext}"
-            if not (self.root / file).exists():
-                if ext == "xml":
-                    logging.info(f"copy initial {self.root / file}")
-                    shutil.copy(resource_path(file), self.root / file)
-                else:
-                    logging.info(f"create soft link to {self.root / file}")
-                    os.symlink(resource_path(file), self.root / file)
+            copy_file(file)
 
         for ext in ["svg", "png"]:
             file = f"not_available.{ext}"
-            if not (self.root / file).exists():
-                logging.info(f"create soft link to {self.root / file}")
-                os.symlink(resource_path(file), self.root / file)
+            copy_file(file)
 
     def add(self, query: str, **kwargs) -> None:
         """Add an entry for a query from the repository."""

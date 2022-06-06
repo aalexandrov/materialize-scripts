@@ -45,6 +45,18 @@ class Opt:
 
 
 @command.command()
+@click.option("--repository", **Opt.REPOSITORY)
+@mzt.cli.is_documented_by(mzt.explain.repository.api.Repository.init)
+def init(repository: Path) -> None:
+    try:
+        repo = mzt.explain.repository.api.Repository(repository)
+        repo.init(force=True)
+    except Exception as e:
+        message = traceback.format_exc()
+        raise mzt.cli.MztException(f"'repository add' command failed:\n{message}")
+
+
+@command.command()
 @click.argument("query", **mzt.explain.cli.Arg.QUERY)
 @click.option("--repository", **Opt.REPOSITORY)
 @click.option("--db-port", **mzt.cli.BaseOpt.DB_PORT)
