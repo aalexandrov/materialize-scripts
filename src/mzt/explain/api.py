@@ -11,9 +11,8 @@ from enum import Enum
 import re
 from typing import Dict, List, Set, TextIO, Tuple
 
-import psycopg2
-import psycopg2.extensions
 import mzt.dot.api
+import mzt.lib
 
 
 class ExplainMode(Enum):
@@ -55,7 +54,7 @@ def query(out: TextIO, query: str, mode: ExplainMode, **kwargs) -> None:
     # statements, so we need to parse those before doing the work
     vars, query = parse_set_vars_prefix(query)
 
-    with connect(**kwargs) as conn, conn.cursor() as cursor:
+    with mzt.lib.db_connect(**kwargs) as conn, conn.cursor() as cursor:
         # prepare ocnnection environment by executing all set_option statements
         for key, val in vars.items():
             cursor.execute(f"SET {key} = {val}")
@@ -74,21 +73,11 @@ def query(out: TextIO, query: str, mode: ExplainMode, **kwargs) -> None:
 def view(out: TextIO, view: str, mode: ExplainMode, **kwargs) -> None:
     """Dot graph for 'EXPLAIN {mode} FOR VIEW {view}'."""
 
-    with connect(**kwargs) as conn, conn.cursor() as cursor:
+    with mzt.lib.db_connect(**kwargs) as conn, conn.cursor() as cursor:
         query = f"EXPLAIN {str(mode).replace('-', ' ').upper()} FOR VIEW {view}"
         cursor.execute(query)
         lines = cursor.fetchone()[0].splitlines()
         mzt.dot.api.generate_graph(out, lines, view)
-
-
-def connect(
-    db_port: int,
-    db_host: str,
-    db_name: str,
-    db_user: str,
-    **kwargs,
-) -> psycopg2.extensions.connection:
-    return psycopg2.connect(host=db_host, port=db_port, database=db_name, user=db_user)
 
 
 def parse_set_vars_prefix(query: str) -> Tuple[Dict[str, str], str]:

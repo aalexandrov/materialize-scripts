@@ -7,17 +7,15 @@
 # the Business Source License, use of this software will be governed
 # by the Apache License, Version 2.0.
 
-import click
-
-import mzt.cli
-import mzt.explain.cli
-import mzt.explain.repository.cli
-import mzt.lib
+import psycopg2
+import psycopg2.extensions
 
 
-def main() -> None:
-    mzt.cli.command(auto_envvar_prefix="MZT")
-
-
-if __name__ == "__main__":
-    main()
+def db_connect(
+    db_port: int,
+    db_host: str,
+    db_name: str,
+    db_user: str,
+    **kwargs,
+) -> psycopg2.extensions.connection:
+    return psycopg2.connect(host=db_host, port=db_port, database=db_name, user=db_user)
