@@ -21,6 +21,7 @@ setup(
     install_requires=[
         "click==8.0.3",
         "lxml==4.7.1",
+        "pandas==1.5.0",
         "psycopg2-binary==2.9.1",
         "types-pkg-resources==0.1.3",
     ],

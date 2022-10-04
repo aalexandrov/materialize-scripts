@@ -12,6 +12,7 @@ import click
 import mzt.cli
 import mzt.explain.cli
 import mzt.explain.repository.cli
+import mzt.gdb.cli
 import mzt.lib
 import mzt.trace.cli
 import mzt.trace.repository.cli
