@@ -52,6 +52,7 @@ class Opt:
 @click.option("--db-host", **mzt.cli.BaseOpt.DB_HOST)
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
+@click.option("--db-pass", **mzt.cli.BaseOpt.DB_PASS)
 @mzt.cli.is_documented_by(mzt.trace.api.query)
 def query(query: str, config: mzt.trace.api.TraceConfig, **kwargs) -> None:
     try:
@@ -70,6 +71,7 @@ def query(query: str, config: mzt.trace.api.TraceConfig, **kwargs) -> None:
 @click.option("--db-host", **mzt.cli.BaseOpt.DB_HOST)
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
+@click.option("--db-pass", **mzt.cli.BaseOpt.DB_PASS)
 @mzt.cli.is_documented_by(mzt.trace.api.view)
 def view(view: str, config: mzt.trace.api.TraceConfig, **kwargs) -> None:
     try:

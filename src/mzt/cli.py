@@ -58,6 +58,12 @@ class BaseOpt:
         envvar="MZT_DB_USER",
     )
 
+    DB_PASS = dict(
+        default=None,
+        help="DB connection password.",
+        envvar="MZT_DB_PASS",
+    )
+
 
 # Utility methods
 # ---------------
