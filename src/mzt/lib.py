@@ -19,6 +19,7 @@ def db_connect(
     db_name: str,
     db_user: str,
     db_pass: Optional[str],
+    db_require_ssl: bool,
     **kwargs,
 ) -> psycopg2.extensions.connection:
     return psycopg2.connect(
@@ -27,5 +28,5 @@ def db_connect(
         database=db_name,
         user=db_user,
         password=db_pass,
-        sslmode="require",
+        sslmode="require" if db_require_ssl else "prefer",
     )

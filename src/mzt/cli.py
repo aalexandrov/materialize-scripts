@@ -64,6 +64,12 @@ class BaseOpt:
         envvar="MZT_DB_PASS",
     )
 
+    DB_REQUIRE_SSL = dict(
+        is_flag=True,
+        help="DB connection requires SSL.",
+        envvar="MZT_DB_REQUIRE_SSL",
+    )
+
 
 # Utility methods
 # ---------------

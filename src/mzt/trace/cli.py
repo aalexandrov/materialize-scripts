@@ -53,6 +53,7 @@ class Opt:
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
 @click.option("--db-pass", **mzt.cli.BaseOpt.DB_PASS)
+@click.option("--db-require-ssl", **mzt.cli.BaseOpt.DB_REQUIRE_SSL)
 @mzt.cli.is_documented_by(mzt.trace.api.query)
 def query(query: str, config: mzt.trace.api.TraceConfig, **kwargs) -> None:
     try:
@@ -72,6 +73,7 @@ def query(query: str, config: mzt.trace.api.TraceConfig, **kwargs) -> None:
 @click.option("--db-name", **mzt.cli.BaseOpt.DB_NAME)
 @click.option("--db-user", **mzt.cli.BaseOpt.DB_USER)
 @click.option("--db-pass", **mzt.cli.BaseOpt.DB_PASS)
+@click.option("--db-require-ssl", **mzt.cli.BaseOpt.DB_REQUIRE_SSL)
 @mzt.cli.is_documented_by(mzt.trace.api.view)
 def view(view: str, config: mzt.trace.api.TraceConfig, **kwargs) -> None:
     try:
